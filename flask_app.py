@@ -14,11 +14,11 @@ def generate_api_key(user_id):
 
 app = Flask(__name__)
 
-user_ids = [101, 102, 103, 104]
+from fromCSV import data
 
+user_ids = data.keys()
 api_keys = {str(user_id): generate_api_key(user_id) for user_id in user_ids}
 
-print(api_keys)
 
 @app.route('/')
 def index():
@@ -70,13 +70,21 @@ def handle_post():
       return 'brak lub niepoprawny klucz do API', 401
     if (request.headers['Authorization'] not in api_keys.values() ):
       return 'niepoprawny klucz do API', 403
+    indeks = get_key_by_value(api_keys,request.headers['Authorization'])[0]
     if ('name' in request.json and 'url' in request.json):
       with open('wyniki.txt','a') as file:
         request.json['date'] = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
         file.write(json.dumps(request.json) + '\n')
-      return f'Dziękuję {request.json.get("name")}! Przesłałeś następujący adres URL: {request.json.get("url")}'
+        file.write(f'\t {indeks} -> {data[indeks]} \n')
+        
+      return f'''Dziękuję {request.json.get("name")}! 
+Przesłałeś następujący adres URL: {request.json.get("url")}.
+Skorzystałeś z klucza dla {indeks} -> {data[indeks]}.'''
     else:
       return 'brak parametrów name, url', 400
   else:
     return 'złe zapytanie, metoda lub argumenty', 400
 
+def get_key_by_value(d, value):
+    # Wyszukiwanie klucza lub kluczy na podstawie wartości
+    return [key for key, val in d.items() if val == value]
