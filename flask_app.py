@@ -13,7 +13,7 @@ api_keys = {'101':'1234',
 @app.route('/')
 def index():
     return """<html><body>
-              <h1>Witam na 11-tych ćwiczeniach z PRM1T!</h1>
+              <h1>Witam na Laboratorium 14-tym z PRM1T!</h1>
               <h2>Zapytania do webowego API z Pythona, a więc obsługa zapytań HTTP</h2>
               <h3>Pomoc <a href="https://www.geeksforgeeks.org/get-post-requests-using-python/">np. tu na GeeksForGeeks</a></h3>
               <h3>Adres do API to <a href="https://pbobinski.pythonanywhere.com/">właśnie ta strona</a></h3>
