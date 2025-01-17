@@ -10,6 +10,11 @@ def csv_to_dict(filename):
             result[key] = {"name": row["imie"], "surname": row["nazwisko"]}
     return result
 
-filename = "studenci.csv"
+filename = "studenci_103.csv"
 data = csv_to_dict(filename)
+filename = "studenci_104.csv"
+data |= csv_to_dict(filename)
+filename = "studenci_105.csv"
+data |= csv_to_dict(filename)
+data['1234'] = {"name": "Tester", "surname": "Testowy"}
 
