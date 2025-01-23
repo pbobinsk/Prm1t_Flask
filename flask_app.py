@@ -71,17 +71,17 @@ def handle_post():
     if (request.headers['Authorization'] not in api_keys.values() ):
       return 'niepoprawny klucz do API', 403
     indeks = get_key_by_value(api_keys,request.headers['Authorization'])[0]
-    if ('name' in request.json and 'url' in request.json):
-      with open('wyniki.txt','a') as file:
+    if ('name' in request.json and request.json['name'] and 'url' in request.json and request.json['url']):
+      with open('wyniki.txt','a', encoding='utf8') as file:
         request.json['date'] = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
-        file.write(json.dumps(request.json) + '\n')
+        file.write(json.dumps(request.json, ensure_ascii=False) + '\n')
         file.write(f'\t {indeks} -> {data[indeks]} \n')
         
       return f'''Dziękuję {request.json.get("name")}! 
 Przesłałeś następujący adres URL: {request.json.get("url")}.
 Skorzystałeś z klucza dla {indeks} -> {data[indeks]}.'''
     else:
-      return 'brak parametrów name, url', 400
+      return 'brak lub puste parametry name, url', 400
   else:
     return 'złe zapytanie, metoda lub argumenty', 400
 
